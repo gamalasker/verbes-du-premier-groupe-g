@@ -1,0 +1,286 @@
+﻿
+<!doctype HTML public '-//W3C//DTD HTML 4.0 Frameset//EN'>
+<html>
+<head>
+<title>Quiz</title>
+
+<script language=javascript><!--
+//DECLARATION OF GLOBAL VARIABLES AND ARRAYS
+var vscore=0;
+var vmissed=0;
+var vnumans=0;
+var numofquest=0;
+var valeach=0;
+
+QuestionsArray=new Array()
+QuestionsArray[0]=["Je (jouer)au ballon.= ","joue "];
+QuestionsArray[1]=["Nous (rêver)en dormant. = ","rêvons"];
+QuestionsArray[2]=["Tu (espérer) une bonne note. = ","espères "];
+QuestionsArray[3]=["Elles (chanter)bien. = ","chantent "];
+QuestionsArray[4]=["Ils (nager)dans la piscine. = ","nagent "];
+QuestionsArray[5]=["Vous (regarder) la télévision. = ","regardez "];
+QuestionsArray[6]=["J' .... (écouter) de la musique. = ","écoute "];
+QuestionsArray[7]=["Elle ....  (nager) dans une mare. = ","nage "];
+QuestionsArray[8]=["Nous .....  (manger) des tomates. = ","mangeons "];
+QuestionsArray[9]=["Vous .....  (danser) dans la cour du collège. = ","dansez "];
+QuestionsArray[10]=["Je mange et mes copains ......  (jouer). = ","jouent "];
+QuestionsArray[11]=["Tu ......  (préparer) la cuisine. = ","prépares "];
+QuestionsArray[12]=["Nous nous .....  (cacher) dans la maison. = ","cachons "];
+QuestionsArray[13]=["Je ......  (sauter) dans ma chambre sur mon canapé. = ","saute "];
+QuestionsArray[14]=["Tu ......  (donner) tes doudous. = ","donnes "];
+QuestionsArray[15]=["Nous ......  (fermer) la porte. = ","fermons "];
+QuestionsArray[16]=["je .........(peser) = ","pèse"];
+QuestionsArray[17]=["Elle.....(essayer) cette robe. = ","essaie"];
+QuestionsArray[18]=["nous....(acheter)une nouvelle voiture. = ","achetons"];
+QuestionsArray[19]=["Ils s'appe...ent Marc, Sophie et Elise. = ","l"];
+QuestionsArray[20]=["Paris s'appe... e la Ville Lumière. = ","ll"];
+
+AnswersArray=new Array();
+
+//JavaScript doesn't have a trim to strip the spaces around strings. 
+//This little bit of code uses regular expressions to strip the spaces around given input. 
+function trim(input)  {
+  var lre = /^\s*/;
+  var rre = /\s*$/;
+  input = input.replace(lre, "");
+  input = input.replace(rre, "");
+  return input; }
+
+//FUNCTION TO RANDOMIZE ARRAYS
+Array.prototype.shuffle = function(){
+  var len = this.length;
+  var rand,temp,i;
+  for (i = 0; i < len; i++){
+    rand = Math.floor(Math.random()*len);
+    temp = this[i];
+    this[i] = this[rand];
+    this[rand] = temp; }
+    }
+
+
+//FUNCTION TO SETUP THE WEB PAGE ON LOAD
+function resetForm() {
+var TempAnswer1
+var TempAnswer2
+
+ QuestionsArray.shuffle();
+
+ txtQuestions.innerHTML = WriteQuestions();
+ quizmain.reset();
+ numofquest=QuestionsArray.length;
+ valeach=100/numofquest;
+ for (var x=1; x<eval(numofquest+1); x++) { eval("quizmain.T" + x + ".value='';");  }
+ txtScore.innerText='';
+ quizmain.StudentName.focus();  }
+
+
+
+//FUNCTION TO WRITE THE QUESTIONS TO THE PAGE
+function WriteQuestions(){
+var info="";
+
+for (q = 0; q < QuestionsArray.length; q++) {
+info += '<p class=numbered>' + eval(eval(q)+1) + '. ' + QuestionsArray[q][0] + ' <input type=text autocomplete=off name=Ans' + eval(eval(q)+1) + ' class=utext size=50></p>\n'
+     +  '<div style=margin-left:15px><input type=hidden name=D' + eval(eval(q)+1) + ' value=' + QuestionsArray[q][1] + '>\n<input tabindex=-1 READONLY type=text size=40 name=T'+eval(eval(q)+1)+' class=correct></p>\n'
+     +  '</div>\n\n'  }
+return info;
+}
+
+//FUNCTION TO SHOW THE QUIZ SCORE
+function fillvals(){
+  txtScore.innerHTML ='<p><br><br><b>votre Score est: '+Math.round(vscore)+' %</b></p>'
+  txtScore.innerHTML+='<p><b>اجابات خطأ '+vmissed+' سؤال</b></p>'
+  txtScore.innerHTML+='<p><b>لم تجب على'+eval(numofquest-vnumans)+' سؤال</b><br><br></p>'  }
+
+//FUNCTION TO SET THE VALUE OF A QUESTION OPTION
+function setValue(Number,Value){
+  eval("quizmain.D" + Number + ".value=Value;");  }
+
+//FUNCTION TO CHECK A QUESTION'S ANSWER
+function checkIt(){
+ for (var x=1; x<eval(numofquest+1); x++) {
+  eval("quizmain.T" + x + ".style.display='';");
+  eval("if (trim(quizmain.D" + x + ".value.toUpperCase())==trim(quizmain.Ans" + x + ".value.toUpperCase())) {vscore+=valeach;quizmain.T" + x + ".style.color='445577';quizmain.T" + x + ".value='Correct!';} else {vmissed++;quizmain.T" + x + ".style.color='445577';quizmain.T" + x + ".value='la bonne réponse est '+quizmain.D" + x + ".value+'.';}");
+  eval("if (quizmain.Ans" + x + ".value!='') vnumans++;")
+ }
+ fillvals();
+ quizmain.submit.disabled=true;
+}
+
+//FUNCTION TO PRINT THE QUIZ RESULTS
+function printQuiz(){
+if (quizmain.StudentName.value=='') { quizmain.StudentName.focus();alert('Please enter your name before printing your quiz.'); }
+else { if ( quizmain.submit.disabled==false) checkIt(); window.print(); } }
+
+// Stop hiding -->
+</script><style type='text/css'>
+<!--
+
+body {
+			 scrollbar-face-color: 445577;
+			 scrollbar-highlight-color: #667799;
+			 scrollbar-3dlight-color: 445577;
+			 scrollbar-darkshadow-color: 445577;
+			 scrollbar-shadow-color: 445577;
+			 scrollbar-arrow-color: #667799;
+			 scrollbar-track-color: 445577;
+			 font-family: "Verdana", "Arial", "Helvetica", sans-serif;
+			 overflow: auto;
+			 color: #000000;
+		 }
+
+h1, h2, h3, h4 { margin:0pt; margin-top:6pt; color:ffffff; }
+
+li, p, td     {
+			 margin: 0pt;
+			 color: #000000;
+		 }
+
+h1     {
+			 font-size: 16pt;
+			 font-weight: bold;
+			 color: #000000;
+		 }
+h2     {   font-size:13pt; font-weight:bold; }
+h3     {   font-size:12pt; font-weight:bold; }
+          
+ul    {   list-style-image:url('images/anchorchrome.png'); }
+
+a         { font-weight: bold; text-decoration: none; color:#AAAACC; }
+a:visited { font-weight: bold; text-decoration: none; color:#AAAACC; }
+a:active  { font-weight: bold; text-decoration: underline; color:#AAAAAA; }
+a:hover   { font-weight: bold; text-decoration: underline; color:#070034; }
+
+a img {   border:none; }
+
+.correct { border:none; background-color:transparent; font-weight:bold; }
+.utext {background-color:transparent;border:none;border-bottom:2px solid black; color:black; }
+
+
+.bluebox  { background-color: #667799; text-align:center; margin-top:10px; margin-bottom:10px; border: #070034 2px solid; width: 85%; padding:1px; font-size:16pt; }
+          
+.linkbox  { margin-top:10px; border: #070034 2px solid; border-top: #070034 20px solid; padding:10px; padding-left:20px; position:absolute; left:10px; width:140px; }
+            
+.anchor   { margin:15px; margin-right: 20px;  }
+
+.signature { font-family: "Times New Roman", serif; font-style: italic; font-size:12pt; margin-top:10; }
+             
+p.signature { font-family: "Times New Roman", serif; font-style: italic; text-indent: 15pt; font-size:12pt; margin-top:10; }
+
+p.Calendar { color: #000000; font-weight: bold;	font-family: Tahoma, sans-serif; text-align: center; font-size: 14pt;  }
+
+h1.CalendarHeader { background-color: Transparent; border:none; font-family: Tahoma, sans-serif; color: #0000b7; font-weight: bold; text-align: center;	font-size: 15pt;	margin: 0;  }
+
+a.calendar:link    { color: #d40014; text-underline: Off; text-decoration: none; width:100%; padding-top:10px; padding-bottom:10px; }
+a.calendar:visited { color: #d40014; text-underline: Off; text-decoration: none; width:100%; padding-top:10px; padding-bottom:10px; }
+a.calendar:active  { color: #ffffff; text-underline: Off; text-decoration: none; background-color: #000066; width:100%; padding-top:10px; padding-bottom:10px; }
+a.calendar:hover   { color: #ffffff; text-underline: Off; text-decoration: none; background-color: #000066; width:100%; padding-top:10px; padding-bottom:10px; }
+
+		 .style1 {
+			 font-size: x-large;
+			 color: #000000;
+		 }
+		 .style2 {
+			 font-size: x-large;
+			 font-weight: bold;
+	color: #000000;
+}
+
+.style3 {
+	color: #000000;
+}
+.style4 {
+			 font-size: x-large;
+			 color: #000000;
+			 outline-color: #000000;
+		 }
+.style5 {
+	text-align: left;
+}
+
+		 .newStyle1 {
+			 color: #000000;
+		 }
+
+		 .auto-style2 {
+			 color: #FF0000;
+			 outline-color: #000000;
+			 text-align: right;
+			 font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+		 }
+		 .auto-style3 {
+			 font-size: large;
+			 font-weight: bold;
+			 color: #000000;
+		 }
+		 .auto-style4 {
+			 font-size: large;
+		 }
+
+		 .auto-style5 {
+			 font-size: x-large;
+			 font-weight: bold;
+			 color: #000000;
+			 text-align: center;
+		 }
+
+		 .auto-style6 {
+			 font-size: large;
+			 font-weight: bold;
+			 color: #FF0000;
+			 text-align: center;
+		 }
+
+.auto-style7 {
+	font-size: medium;
+	color: #000000;
+}
+.auto-style8 {
+	font-size: medium;
+}
+.auto-style10 {
+	text-align: right;
+	direction: rtl;
+}
+
+-->
+</style>
+
+</head>
+<body onload='resetForm();' style='font-family:Tahoma,sans-serif; color: #000000; ' class="style2" text="#000000">
+
+<form action="javascript:checkIt();" class="style2" method="post" name="quizmain">
+<center class="style2"><h1>اختبار على افعال المجموعه الاولى<input name=txtQuiz type=hidden value='Quiz' class="style4"></h1>
+
+</center>
+
+<p class="auto-style2">اكتب التصريف الصحيح للفعل</p>
+
+<table x-use-null-cells style="x-cell-content-align: top; float: aligncenter; border-spacing: 0px;" cellspacing=0><col><col style="width: 0px;">
+<tr style="x-cell-content-align: top;" valign=top>
+<td style="border: none; padding: 2px;">
+<p class="auto-style3">écris votre nom</td>
+<td style=padding:0px;border:None; width=0>
+<p class="style5">
+<input tabindex=0 name=StudentName type=text style=width:400px; class="style1"><span class="auto-style4">اسمك</span> </p>
+	</td></tr></table>
+	<div class="auto-style10">
+		<span class="auto-style8">انسخ الحرف&nbsp;&nbsp; :&nbsp;&nbsp;&nbsp; à â 
+		ç è é ê ë î ï ô ù û&nbsp;&nbsp; </span>
+<br class="auto-style7"><br class="auto-style7">
+
+	</div>
+<div id=txtQuestions style="margin-left:15px; color: #000000;" class="style2" visible="false">
+</div><br class="style2"><br class="style4">
+
+<center>
+<div id=txtScore class="style2"></div>
+<p class="style4">
+<input name=submit type=submit value="تسليم" class="style1" style="width: 235px">    
+<input name=print type=button value="اطبع" onclick="printQuiz();" class="style2"></p>
+</center>
+</form>
+<p class="auto-style6">www.gamalasker.com</p>
+<p class="auto-style5">&nbsp;</p>
+</body>
+</html>
